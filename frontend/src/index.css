@@ -1,0 +1,50 @@
+.squareColor1 {
+  background: rgb(255, 0, 0);
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
+.squareColor2 {
+  background: rgb(145, 161, 0);
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.div-inline-history {
+  display: inline-block;
+  position: fixed;
+  top: 0;
+}
+.div-inline {
+  display: inline-block;
+}
+.blackiconcolor {
+  color:rgb(0, 0, 0);
+}
+
+.whiteiconcolor {
+  color:rgb(255, 255, 255);
+}
