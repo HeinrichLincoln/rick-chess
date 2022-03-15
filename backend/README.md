@@ -16,9 +16,9 @@ routes: que por sua vez é o arquivo o qual define o que cada caminho do browse 
 
 models: nessa pasta tem 3 arquivos:
 
-.Board -> é a classe que cria o tabuleiro com a posiçao inicial ja definida e algumas funcoes de auxilio
-.ThreatBoard -> é uma classe que contem uma matriz que representa o tabuleiro indicando em qual casa as peças ameaçam
-.Piece -> é a classe que responsaavel pro criar uma peça (symbol, color)
+- Board -> é a classe que cria o tabuleiro com a posiçao inicial ja definida e algumas funcoes de auxilio
+- ThreatBoard -> é uma classe que contem uma matriz que representa o tabuleiro indicando em qual casa as peças ameaçam
+- Piece -> é a classe que responsaavel pro criar uma peça (symbol, color)
 
 service:
 
