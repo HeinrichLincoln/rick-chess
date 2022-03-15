@@ -8,11 +8,11 @@ controllers: que é responsavel por mandar funcoes mais basicas e de mais facil 
 
 routes: que por sua vez é o arquivo o qual define o que cada caminho do browse vai fazer
 
-/board -> retorna o tabuleiro
-/result -> retorn o resultado do jogo
-/movement -> onde permite que o jogador faça um movimento
-/reset -> chamada responsavel por resetar o jogo para que possa ser começado um novo jogo
-/draw -> atualiza o reultado para empate
+- /board -> retorna o tabuleiro
+- /result -> retorn o resultado do jogo
+- /movement -> onde permite que o jogador faça um movimento
+- /reset -> chamada responsavel por resetar o jogo para que possa ser começado um novo jogo
+- /draw -> atualiza o reultado para empate
 
 models: nessa pasta tem 3 arquivos:
 
