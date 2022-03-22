@@ -21,7 +21,7 @@ class Board {
                     [null, null, null, null, null, null, null, null],
                     [null, null, null, null, null, new Piece('R', 'white'),null, null],
                     ] 
-    }  
+    }
 
     
     putPieceOnBoard(i, j, piece) {

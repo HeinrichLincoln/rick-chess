@@ -20,21 +20,25 @@ const realizeMovement = (req, res) => {
     var kingIsThreated
 
     if(turn % 2 == 0){
-        kingIsThreated = check.isKingInCheck(board, threatBoard).whiteKingInCheck
+        kingIsThreated = check.isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition).whiteKingInCheck
     }else{
-        kingIsThreated = check.isKingInCheck(board, threatBoard).blackKingInCheck
+        kingIsThreated = check.isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition).blackKingInCheck
     }
 
     response = isMoveWillRealize.realizeMovement(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition, kingIsThreated, turn, response)
 
     if(turn % 2 == 0){
-        thisMovePutOtherKingInCheck = check.isKingInCheck(board, threatBoard).blackKingInCheck
+        thisMovePutOtherKingInCheck = check.isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition).blackKingInCheck
     }else{
-        thisMovePutOtherKingInCheck = check.isKingInCheck(board, threatBoard).whiteKingInCheck
+        thisMovePutOtherKingInCheck = check.isKingInCheck(board, threatBoard, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition).whiteKingInCheck
     }
 
     if(thisMovePutOtherKingInCheck == true){
-        mate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
+        if(turn % 2 == 0){
+            mate = check.isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition).mate
+        }else{
+            mate = check.isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition).mate
+        }
     }
 
     if(mate == true){

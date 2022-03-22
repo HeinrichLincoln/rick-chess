@@ -41,7 +41,7 @@ function putKingValuesOnly(board, initialLinePosition, initialColumnPosition, th
         }
     }else if(threatBoard.getSquare(threatLineSquare, threatColumnSquare) == 2){
         if(board.getSquare(initialLinePosition, initialColumnPosition).getColor() == 'white'){
-            threatBoard.putValueOnBoard(threatLineSquare, threatColumnSquare, 6)
+            threatBoard.putValueOnBoard(threatLineSquare, threatColumnSquare, 7)
         }
     }
 }
@@ -559,16 +559,17 @@ const putThreat = {
             }
         }
 
-        
+        console.log(threatBoard)
     }
 }
 
 const check = {
 
-    isKingInCheck: function isKingInCheck(board, threatBoard){
+    isKingInCheck: function isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition){
 
         var whiteKingInCheck = false
         var blackKingInCheck = false
+        var mate = false
 
         putThreat.putThreatOnBoard(board, threatBoard)
 
@@ -581,10 +582,12 @@ const check = {
                         if(board.getSquare(i, j).getColor() == 'white'){
                             if((threatBoard.getSquare(i, j) == 2) || (threatBoard.getSquare(i, j) == 3) || (threatBoard.getSquare(i, j) == 5)){
                                 whiteKingInCheck = true
+                                whiteKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
                             }
                         }else{
                             if((threatBoard.getSquare(i, j) == 1) || (threatBoard.getSquare(i, j) == 3) || (threatBoard.getSquare(i, j) == 4)){
                                 blackKingInCheck = true
+                                blackKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
                             }
                         }
                     }
@@ -595,7 +598,8 @@ const check = {
 
         var kingInCheck = {
             whiteKingInCheck,
-            blackKingInCheck
+            blackKingInCheck,
+            mate
         }
 
         return kingInCheck
