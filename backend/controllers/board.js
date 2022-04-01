@@ -20,26 +20,29 @@ const realizeMovement = (req, res) => {
     var kingIsThreated
 
     if(turn % 2 == 0){
-        kingIsThreated = check.isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition).whiteKingInCheck
+        kingIsThreated = check.isKingInCheck(board, finalLinePosition, finalColumnPosition).whiteKingInCheck
     }else{
-        kingIsThreated = check.isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition).blackKingInCheck
+        kingIsThreated = check.isKingInCheck(board, finalLinePosition, finalColumnPosition).blackKingInCheck
     }
 
-    response = isMoveWillRealize.realizeMovement(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition, kingIsThreated, turn, response)
+    response = isMoveWillRealize.realizeMovement(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition, kingIsThreated, turn)
 
     if(turn % 2 == 0){
-        thisMovePutOtherKingInCheck = check.isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition).blackKingInCheck
+        thisMovePutOtherKingInCheck = check.isKingInCheck(board, finalLinePosition, finalColumnPosition).blackKingInCheck
     }else{
-        thisMovePutOtherKingInCheck = check.isKingInCheck(board, threatBoard, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition).whiteKingInCheck
+        thisMovePutOtherKingInCheck = check.isKingInCheck(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition).whiteKingInCheck
     }
 
     if(thisMovePutOtherKingInCheck == true){
         if(turn % 2 == 0){
-            mate = check.isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition).mate
+            mate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
         }else{
-            mate = check.isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition).mate
+            mate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
         }
     }
+
+    console.log(mate)
+
 
     if(mate == true){
         res.send('The game over')

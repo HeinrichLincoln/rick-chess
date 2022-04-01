@@ -19,10 +19,10 @@ class Board {
                     [null, null, null, null, null, null, null, null],
                     [null, null, null, null, null, null, null, null], 
                     [null, null, null, null, null, null, null, null],
-                    [null, null, null, null, null, new Piece('R', 'white'),null, null],
+                    [null, null, null, null, null, new Piece('R', 'white'),null, null], 
                     ] 
     }
-
+ 
     
     putPieceOnBoard(i, j, piece) {
         this.board[i][j] = piece

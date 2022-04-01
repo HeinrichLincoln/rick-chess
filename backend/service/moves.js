@@ -2,7 +2,9 @@ const Board = require('../models/board')
 const {check,
     checkMate} = require('../service/check')
 
-function realizeMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition,turn, response){
+function realizeMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition,turn){
+
+    var response
     
     if(board.getSquare(initialLinePosition, initialColumnPosition) != null){
         if((validMove.pieceMoveIsValid(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition) == true) && (validMove.whiteTurn(board, initialLinePosition, initialColumnPosition, turn) == true)){
@@ -334,28 +336,29 @@ var validMove = {
 }
 
 const isMoveWillRealize = {
-    realizeMovement: function realizeMovement(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition, KingInCheck, turn, response, threatBoard){
+    realizeMovement: function realizeMovement(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition, KingInCheck, turn, threatBoard){
 
         var isKingContinuesInCheck = false
+        var response
 
         if(KingInCheck == true){
             var boardCopy = new Board()
             var arrayCopy = board.getBoard().map((x) => ([...x]))
             boardCopy.setBoard(arrayCopy)
 
-            response = realizeMove(boardCopy, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition,turn, response)
+            response = realizeMove(boardCopy, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition,turn)
 
             if(turn % 2 == 0){
-                isKingContinuesInCheck = check.isKingInCheck(boardCopy, threatBoard).whiteKingInCheck 
+                isKingContinuesInCheck = check.isKingInCheck(boardCopy, finalLinePosition, finalColumnPosition).whiteKingInCheck 
             }else{
-                isKingContinuesInCheck = check.isKingInCheck(boardCopy, threatBoard).blackKingInCheck
+                isKingContinuesInCheck = check.isKingInCheck(boardCopy, finalLinePosition, finalColumnPosition).blackKingInCheck
             }
 
 
         }
 
         if(isKingContinuesInCheck == false){
-            response = realizeMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition,turn, response)
+            response = realizeMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition,turn)
         }else{
             response = 'Invalid Move'
         }

@@ -1,4 +1,5 @@
 const THREAT_TYPE = require('../enums/status')
+const ThreatBoard = require('../models/boardThreat')
 
 function putValueOnThreatBoard(board, initialLinePosition, initialColumnPosition, threatBoard, threatLineSquare, threatColumnSquare){
 
@@ -84,24 +85,25 @@ function pieceCheckingCanBeEaten(board, threatBoard, color, checkingPieceCanBeEa
     var pieceCheckingLinePosition = null
     var pieceCheckingColumnPosition = null
 
-    var kingAtacking = color === 'white' ? THREAT_TYPE.whiteKingAtacking : THREAT_TYPE.blackKingAtacking
-    var pieceAtacking = color === 'white' ? THREAT_TYPE.whitePieceIsAtacking : THREAT_TYPE.blackPieceIsAtacking //if(white){  pieceAtacking = 1}else{  pieceAtacking = 2}
-    var kingAndPieceAtacking = color === 'white' ? THREAT_TYPE.whiteKingAtacking :THREAT_TYPE.blackKingAtacking //if(white){  pieceAtacking = 4}else{  kingAndPieceAtacking = 5}
+    var kingAtacking = color === 'black' ? THREAT_TYPE.whiteKingAtacking : THREAT_TYPE.blackKingAtacking
+    var pieceAtacking = color === 'black' ? THREAT_TYPE.whitePieceAtacking : THREAT_TYPE.blackPieceAtacking
+    var kingAndPieceAtacking = color === 'black' ? THREAT_TYPE.blackKingAndWhitePieceAtacking :THREAT_TYPE.whiteKingAndBlackPieceAtacking
 
     for(var i = 0; i <= 7; i++){
         for(var j = 0; j <= 7; j++){
 
             if(board.getSquare(i, j)){
-                if(board.getSquare(i, j).isPieceChecking() == true && pieceCheckingColumnPosition == null){
-                    pieceCheckingLinePosition = i
-                    pieceCheckingColumnPosition = j
+                if(board.getSquare(i, j).isPieceChecking() == true){
+                    if(pieceCheckingColumnPosition == null){
+                        pieceCheckingLinePosition = i
+                        pieceCheckingColumnPosition = j
 
-                    if((threatBoard.getSquare(pieceCheckingLinePosition, pieceCheckingColumnPosition) == pieceAtacking) || (threatBoard.getSquare(pieceCheckingLinePosition, pieceCheckingColumnPosition) == kingAndPieceAtacking || (threatBoard.getSquare(pieceCheckingLinePosition, pieceCheckingColumnPosition) == 3)) || threatBoard.getSquare(pieceCheckingLinePosition, pieceCheckingColumnPosition) == kingAtacking){
-                        checkingPieceCanBeEaten = true
+                        if((threatBoard.getSquare(pieceCheckingLinePosition, pieceCheckingColumnPosition) == pieceAtacking) || (threatBoard.getSquare(pieceCheckingLinePosition, pieceCheckingColumnPosition) == kingAndPieceAtacking || (threatBoard.getSquare(pieceCheckingLinePosition, pieceCheckingColumnPosition) == 3)) || threatBoard.getSquare(pieceCheckingLinePosition, pieceCheckingColumnPosition) == kingAtacking){
+                            checkingPieceCanBeEaten = true
+                        }
+                    }else{
+                        checkingPieceCanBeEaten = false
                     }
-
-                }else if((threatBoard.getSquare(i, j) == pieceAtacking) || (threatBoard.getSquare(i, j) == kingAndPieceAtacking) || (threatBoard.getSquare(i, j) || threatBoard.getSquare(i, j) == kingAtacking)){
-                    checkingPieceCanBeEaten = true
                 }
             }
 
@@ -184,10 +186,6 @@ function verifyIfIsCheckMate(board, threatBoard, color, somePieceCanEnterInFront
                 initialColumn = pieceCheckingColumnPosition
                 finalColumn = initialColumn
             }
-
-
-            //console.log(initialLine)
-            //console.log(finalLine)
 
             var thisPieceIsAKing = false
 
@@ -558,14 +556,14 @@ const putThreat = {
                 }
             }
         }
-
-        console.log(threatBoard)
     }
 }
 
 const check = {
 
-    isKingInCheck: function isKingInCheck(board, threatBoard, finalLinePosition, finalColumnPosition){
+    isKingInCheck: function isKingInCheck(board, finalLinePosition, finalColumnPosition){
+
+        var threatBoard = new ThreatBoard()
 
         var whiteKingInCheck = false
         var blackKingInCheck = false
@@ -582,12 +580,12 @@ const check = {
                         if(board.getSquare(i, j).getColor() == 'white'){
                             if((threatBoard.getSquare(i, j) == 2) || (threatBoard.getSquare(i, j) == 3) || (threatBoard.getSquare(i, j) == 5)){
                                 whiteKingInCheck = true
-                                whiteKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
+                                //whiteKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
                             }
                         }else{
                             if((threatBoard.getSquare(i, j) == 1) || (threatBoard.getSquare(i, j) == 3) || (threatBoard.getSquare(i, j) == 4)){
                                 blackKingInCheck = true
-                                blackKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
+                                //blackKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
                             }
                         }
                     }
@@ -613,6 +611,9 @@ const checkMate = {
         var checkingPieceCanBeEaten = false
         var somePieceCanEnterInFrontOf = false
         var checkMate = false
+
+        var threatBoard = new ThreatBoard()
+        putThreat.putThreatOnBoard(board, threatBoard)
 
         var hasExitLineSquare
         var hasExitColumnSquare
@@ -679,9 +680,8 @@ const checkMate = {
                                 if(checkingPieceCanBeEaten == false){
                                     checkMate = verifyIfIsCheckMate(board, threatBoard, 'white', somePieceCanEnterInFrontOf)
                                 }
-                            }else 
-                            
-                            if(board.getSquare(initialLinePosition, initialColumnPosition).getColor() == 'black'){
+                                
+                            }else if(board.getSquare(initialLinePosition, initialColumnPosition).getColor() == 'black'){
 
                                 if((initialLinePosition < 7) && (initialColumnPosition > 0)){
                                     hasExitLineSquare = initialLinePosition + 1
