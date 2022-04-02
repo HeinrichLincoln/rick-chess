@@ -580,12 +580,12 @@ const check = {
                         if(board.getSquare(i, j).getColor() == 'white'){
                             if((threatBoard.getSquare(i, j) == 2) || (threatBoard.getSquare(i, j) == 3) || (threatBoard.getSquare(i, j) == 5)){
                                 whiteKingInCheck = true
-                                //whiteKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
+                                whiteKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
                             }
                         }else{
                             if((threatBoard.getSquare(i, j) == 1) || (threatBoard.getSquare(i, j) == 3) || (threatBoard.getSquare(i, j) == 4)){
                                 blackKingInCheck = true
-                                //blackKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
+                                blackKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
                             }
                         }
                     }
