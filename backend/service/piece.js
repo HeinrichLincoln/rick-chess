@@ -1,32 +1,12 @@
-const Board = require('../models/board')
-const {check,
-    checkMate} = require('../service/check')
-
-function realizeMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition,turn){
-
-    var response
-    
-    if(board.getSquare(initialLinePosition, initialColumnPosition) != null){
-        if((validMove.pieceMoveIsValid(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition) == true) && (validMove.whiteTurn(board, initialLinePosition, initialColumnPosition, turn) == true)){
-            var keepPiece = board.getSquare(initialLinePosition, initialColumnPosition)
-            board.removePieceFromBoard(initialLinePosition, initialColumnPosition)
-            board.putPieceOnBoard(finalLinePosition, finalColumnPosition, keepPiece)
-            response = 200
-        }else{
-            response = 'Invalid Move'
-        }
-    }else{
-        response = 'Invalid Move'
-    }
-    return response
-}
-
-
-
-const verifypiecesMove = {
-    verifyBishopMove: function BishopMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition){
+const PieceService = {
+    verifyBishopMove: function BishopMove(board, move){
 
         var verified = false
+
+        var initialLinePosition = move.getInitialPosition().getLine()
+        var initialColumnPosition = move.getInitialPosition().getColumn()
+        var finalLinePosition = move.getFinalPosition().getLine()
+        var finalColumnPosition = move.getFinalPosition().getColumn()
 
             if(board.getSquare(finalLinePosition, finalColumnPosition) == null || board.getSquare(finalLinePosition, finalColumnPosition).getColor() != board.getSquare(initialLinePosition, initialColumnPosition).getColor()){
 
@@ -82,9 +62,14 @@ const verifypiecesMove = {
             return verified
     },
     
-    verifyBlackPawnMove: function blackPawnMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition){
+    verifyBlackPawnMove: function blackPawnMove(board, move){
         
         var verified = false
+
+        var initialLinePosition = move.getInitialPosition().getLine()
+        var initialColumnPosition = move.getInitialPosition().getColumn()
+        var finalLinePosition = move.getFinalPosition().getLine()
+        var finalColumnPosition = move.getFinalPosition().getColumn()
 
             if(board.getSquare(finalLinePosition, finalColumnPosition) == null){
 
@@ -108,9 +93,14 @@ const verifypiecesMove = {
         return verified
     },
 
-    verifyWhitePawnMove: function whitePawnMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition){
+    verifyWhitePawnMove: function whitePawnMove(board, move){
         
         var verified = false
+
+        var initialLinePosition = move.getInitialPosition().getLine()
+        var initialColumnPosition = move.getInitialPosition().getColumn()
+        var finalLinePosition = move.getFinalPosition().getLine()
+        var finalColumnPosition = move.getFinalPosition().getColumn()
 
             if(board.getSquare(finalLinePosition, finalColumnPosition) == null){
 
@@ -137,8 +127,14 @@ const verifypiecesMove = {
 
 
 
-    verifyKnightMove: function knightMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition){
+    verifyKnightMove: function knightMove(board, move){
+
         var verified = false
+
+        var initialLinePosition = move.getInitialPosition().getLine()
+        var initialColumnPosition = move.getInitialPosition().getColumn()
+        var finalLinePosition = move.getFinalPosition().getLine()
+        var finalColumnPosition = move.getFinalPosition().getColumn()
 
             if(board.getSquare(finalLinePosition, finalColumnPosition) == null || board.getSquare(finalLinePosition, finalColumnPosition).getColor() != board.getSquare(initialLinePosition, initialColumnPosition).getColor()){
 
@@ -177,8 +173,14 @@ const verifypiecesMove = {
         return verified
     },
 
-    verifyRookMove : function rookMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition){
+    verifyRookMove : function rookMove(board, move){
+        
         var verified = false
+
+        var initialLinePosition = move.getInitialPosition().getLine()
+        var initialColumnPosition = move.getInitialPosition().getColumn()
+        var finalLinePosition = move.getFinalPosition().getLine()
+        var finalColumnPosition = move.getFinalPosition().getColumn()
 
             if(board.getSquare(finalLinePosition, finalColumnPosition) == null || board.getSquare(finalLinePosition, finalColumnPosition).getColor() != board.getSquare(initialLinePosition, initialColumnPosition).getColor()){
                 
@@ -233,20 +235,27 @@ const verifypiecesMove = {
         return verified
     },
 
-    verifyQueenMove : function queenMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition){
+    verifyQueenMove : function queenMove(board, move){
+
         verified = false
 
-            verified = this.verifyBishopMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition)
+            verified = this.verifyBishopMove(board, move)
 
             if(verified == false){
-                verified = this.verifyRookMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition)
+                verified = this.verifyRookMove(board, move)
             }
 
         return verified
     },
 
-    verifyKingMove: function kingMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition){
+    verifyKingMove: function kingMove(board, move){
+
         var verified = false
+        
+        var initialLinePosition = move.getInitialPosition().getLine()
+        var initialColumnPosition = move.getInitialPosition().getColumn()
+        var finalLinePosition = move.getFinalPosition().getLine()
+        var finalColumnPosition = move.getFinalPosition().getColumn()
 
             if(board.getSquare(finalLinePosition, finalColumnPosition) == null || board.getSquare(finalLinePosition, finalColumnPosition).getColor() != board.getSquare(initialLinePosition, initialColumnPosition).getColor()){
                 
@@ -286,86 +295,4 @@ const verifypiecesMove = {
     }
 }
 
-var validMove = {
-    pieceMoveIsValid : function isMoveValid (board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition){
-
-        var verifiedPiece = false
-
-            switch (board.getSquare(initialLinePosition, initialColumnPosition).getSymbol()) {
-                case 'B':
-                    verifiedPiece = verifypiecesMove.verifyBishopMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition)
-                    break;
-                case 'p':
-                    verifiedPiece = verifypiecesMove.verifyBlackPawnMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition)
-                    break;
-                case 'P':
-                    verifiedPiece = verifypiecesMove.verifyWhitePawnMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition)
-                    break;
-                case 'N':
-                    verifiedPiece = verifypiecesMove.verifyKnightMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition)
-                    break;
-                case 'R':
-                    verifiedPiece = verifypiecesMove.verifyRookMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition)
-                    break;
-                case 'Q':
-                    verifiedPiece = verifypiecesMove.verifyQueenMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition)
-                    break;
-                case 'K':
-                    verifiedPiece = verifypiecesMove.verifyKingMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition)
-                    break;
-            
-                default:
-                    break;
-            }
-        return verifiedPiece
-    },
-    whiteTurn: function isWhiteTurn(board, initialLinePosition, initialColumnPosition, turn){
-
-        var whiteTurn = false
-
-            if(turn % 2 == 0){
-                if(board.getSquare(initialLinePosition, initialColumnPosition).getColor() == 'white'){
-                    whiteTurn = true
-                }
-            }else 
-                if(board.getSquare(initialLinePosition, initialColumnPosition).getColor() == 'black'){
-                    whiteTurn = true
-                }
-            return whiteTurn
-    }
-}
-
-const isMoveWillRealize = {
-    realizeMovement: function realizeMovement(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition, KingInCheck, turn, threatBoard){
-
-        var isKingContinuesInCheck = false
-        var response
-
-        if(KingInCheck == true){
-            var boardCopy = new Board()
-            var arrayCopy = board.getBoard().map((x) => ([...x]))
-            boardCopy.setBoard(arrayCopy)
-
-            response = realizeMove(boardCopy, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition,turn)
-
-            if(turn % 2 == 0){
-                isKingContinuesInCheck = check.isKingInCheck(boardCopy, finalLinePosition, finalColumnPosition).whiteKingInCheck 
-            }else{
-                isKingContinuesInCheck = check.isKingInCheck(boardCopy, finalLinePosition, finalColumnPosition).blackKingInCheck
-            }
-
-
-        }
-
-        if(isKingContinuesInCheck == false){
-            response = realizeMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition,turn)
-        }else{
-            response = 'Invalid Move'
-        }
-
-        return response
-    }
-}
-
-
-module.exports = {isMoveWillRealize,}
+module.exports = PieceService

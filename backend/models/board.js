@@ -19,7 +19,7 @@ class Board {
                     [null, null, null, null, null, null, null, null],
                     [null, null, null, null, null, null, null, null], 
                     [null, null, null, null, null, null, null, null],
-                    [null, null, null, null, null, new Piece('R', 'white'),null, null], 
+                    [null, null, new Piece('R', 'white'), null, null, new Piece('R', 'white'),null, null], 
                     ] 
     }
  
@@ -38,6 +38,10 @@ class Board {
 
     getSquare(i, j){
         return this.board[i][j]
+    }
+
+    getSquareByPosition(position){
+        return this.board[position.getLine()][position.getColumn()]
     }
 
     setBoard(newBoard){

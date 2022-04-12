@@ -1,6 +1,9 @@
 const THREAT_TYPE = require('../enums/status')
 const ThreatBoard = require('../models/boardThreat')
 
+//separar esse arquivo em 2 colocando as partes responsaveis pela criaçao e manipulaçao do threatBoard em outro arquivo
+
+
 function putValueOnThreatBoard(board, initialLinePosition, initialColumnPosition, threatBoard, threatLineSquare, threatColumnSquare){
 
     if(threatBoard.getSquare(threatLineSquare, threatColumnSquare) == 0){
@@ -46,6 +49,18 @@ function putKingValuesOnly(board, initialLinePosition, initialColumnPosition, th
         }
     }
 }
+//colocar as 2 proximas funcoes em um arquivo(pieces.js) separado do service 
+function resetPiecesChecking(board){
+    for(var i = 0; i <= 7; i++){
+        for(var j = 0; j <= 7; j++){
+
+            if(board.getSquare(i, j)){
+                board.getSquare(i, j).setChecking(false)
+            }
+
+        }
+    }
+}
 
 function setPiecesThatAreChecking(board, initialLinePosition, initialColumnPosition, i, j){
 
@@ -54,11 +69,15 @@ function setPiecesThatAreChecking(board, initialLinePosition, initialColumnPosit
             if(board.getSquare(i, j).getColor() == 'white'){
                 if(board.getSquare(initialLinePosition, initialColumnPosition).getColor() == 'black'){
                     board.getSquare(initialLinePosition, initialColumnPosition).setChecking(true)
+                }else{
+                    board.getSquare(initialLinePosition, initialColumnPosition).setChecking(false)
                 }
             }else 
                 if(board.getSquare(i, j).getColor() == 'black'){
                     if(board.getSquare(initialLinePosition, initialColumnPosition).getColor() == 'white'){
                         board.getSquare(initialLinePosition, initialColumnPosition).setChecking(true)
+                    }else{
+                        board.getSquare(initialLinePosition, initialColumnPosition).setChecking(false)
                     }
                 }
         }
@@ -525,6 +544,8 @@ const verifyThreat = {
 const putThreat = {
     putThreatOnBoard: function threatOnBoard(board, threatBoard){
 
+        resetPiecesChecking(board)
+
         for(var i = 0; i <= 7; i++){
             for(var j = 0; j <= 7; j++){
                 if(board.getSquare(i, j)){
@@ -556,51 +577,6 @@ const putThreat = {
                 }
             }
         }
-    }
-}
-
-const check = {
-
-    isKingInCheck: function isKingInCheck(board, finalLinePosition, finalColumnPosition){
-
-        var threatBoard = new ThreatBoard()
-
-        var whiteKingInCheck = false
-        var blackKingInCheck = false
-        var mate = false
-
-        putThreat.putThreatOnBoard(board, threatBoard)
-
-        for(var i = 0; i <= 7; i++){
-            for(var j = 0; j <= 7; j++){
-
-                if(board.getSquare(i, j)){
-                    if(board.getSquare(i, j).getSymbol() == 'K'){
-
-                        if(board.getSquare(i, j).getColor() == 'white'){
-                            if((threatBoard.getSquare(i, j) == 2) || (threatBoard.getSquare(i, j) == 3) || (threatBoard.getSquare(i, j) == 5)){
-                                whiteKingInCheck = true
-                                whiteKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
-                            }
-                        }else{
-                            if((threatBoard.getSquare(i, j) == 1) || (threatBoard.getSquare(i, j) == 3) || (threatBoard.getSquare(i, j) == 4)){
-                                blackKingInCheck = true
-                                blackKingInCheckMate = checkMate.isCheckMate(board, threatBoard, finalLinePosition, finalColumnPosition)
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
-
-        var kingInCheck = {
-            whiteKingInCheck,
-            blackKingInCheck,
-            mate
-        }
-
-        return kingInCheck
     }
 }
 
@@ -748,7 +724,4 @@ const checkMate = {
     }
 }  
 
-module.exports = {
-    check,
-    checkMate
-}
+module.exports = checkMate
