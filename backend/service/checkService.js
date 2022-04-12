@@ -1,5 +1,6 @@
 const ThreatBoard = require('../models/boardThreat')
-const MoveService = require('../service/move')
+const executorService = require('../service/executor')
+const Board = require('../models/board')
 
 const checkService = {
 
@@ -39,7 +40,7 @@ const checkService = {
         boardCopy.setBoard(arrayCopy)
 
 
-        MoveService.doMovement(boardCopy, move)
+        executorService.makeMove(boardCopy, move)
 
         return true
 
