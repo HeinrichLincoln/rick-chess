@@ -48,3 +48,7 @@
 .whiteiconcolor {
   color:rgb(255, 255, 255);
 }
+
+.div-above {
+  clear:both;
+}

@@ -2,6 +2,7 @@ import React from "react"
 import boardModel from "../../models/board"
 import Board from "./board"
 import Button from "./button"
+import Reset from "./reset"
 
 class Game extends React.Component{
     constructor(props) {
@@ -18,6 +19,12 @@ class Game extends React.Component{
             onClick={() => this.onClick(i)}
             status={status}
         ></Button>
+    }
+
+    renderResetButton(){
+        return <Reset
+            reset ={() => this.reset()}
+        ></Reset>
     }
 
     addButton(){
@@ -62,12 +69,23 @@ class Game extends React.Component{
         historyCopy.setBoard(arrarCopy)
         this.setState({board: historyCopy})
     }
+
+    reset(){
+        this.setState({board: new boardModel()})
+
+        var resetArray = [new boardModel()]
+        this.setState({history: resetArray})
+        this.setState({isBoardInLastPosition: true})
+
+        console.log(this.state.board)
+    }
  
     render(){
         return (
             <div className="float-container">
                 <div className="div-inline">{this.renderBoard()} </div> 
                 <div className="div-inline-history"  style={{overflowY: 'auto', maxHeight: '272px'}}>{this.addButton()}</div>
+                <div className="div-above">{this.renderResetButton()}</div>
             </div>
         )
     }

@@ -1,3 +1,10 @@
+/*
+
+    vai ser removido do codigo
+
+*/
+
+
 const THREAT_TYPE = require('../enums/status')
 const ThreatBoard = require('../models/boardThreat')
 
@@ -32,6 +39,7 @@ function putValueOnThreatBoard(board, initialLinePosition, initialColumnPosition
 }
 
 function putKingValuesOnly(board, initialLinePosition, initialColumnPosition, threatBoard, threatLineSquare, threatColumnSquare){
+
     if(threatBoard.getSquare(threatLineSquare, threatColumnSquare) == 0){
         if(board.getSquare(initialLinePosition, initialColumnPosition).getColor() == 'white'){
             threatBoard.putValueOnBoard(threatLineSquare, threatColumnSquare, 4)
@@ -48,8 +56,9 @@ function putKingValuesOnly(board, initialLinePosition, initialColumnPosition, th
             threatBoard.putValueOnBoard(threatLineSquare, threatColumnSquare, 7)
         }
     }
+
 }
-//colocar as 2 proximas funcoes em um arquivo(pieces.js) separado do service 
+
 function resetPiecesChecking(board){
     for(var i = 0; i <= 7; i++){
         for(var j = 0; j <= 7; j++){
@@ -548,6 +557,7 @@ const putThreat = {
 
         for(var i = 0; i <= 7; i++){
             for(var j = 0; j <= 7; j++){
+                
                 if(board.getSquare(i, j)){
                     switch (board.getSquare(i, j).getSymbol()) {
                         case 'B':

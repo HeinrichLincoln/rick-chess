@@ -1,13 +1,17 @@
 import React from "react"
 import Square from "./square"
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faChess, faChessBishop, faChessKnight, faChessPawn, faChessRook, faChessQueen, faChessKing } from "@fortawesome/free-solid-svg-icons"
+import { faChessBishop, faChessKnight, faChessPawn, faChessRook, faChessQueen, faChessKing } from "@fortawesome/free-solid-svg-icons"
+import apiService from "../service/api"
+import { toHaveDisplayValue } from "@testing-library/jest-dom/dist/matchers"
 
 class Board extends React.Component{
     constructor(props) {
         super(props)
         this.state ={
-            keepPiece: null
+            keepPiece: null,
+            initialLinePosition: null,
+            initialColumnPosition: null,
+            verified: true
         }            
     }
     renderSquare(i, j) {
@@ -107,10 +111,53 @@ class Board extends React.Component{
         return value
     }
 
+    verifyIfMoveWillBeRealized(line, column){
 
+        if(this.state.keepPiece == null){
+            
+            if(this.props.board.getSquare(line, column) != null){
+
+                this.setState({initialLinePosition : line})
+                this.setState({initialColumnPosition : column})
+
+            }
+        }else{
+
+            var body = {
+                initialLinePosition: this.state.initialLinePosition,
+                initialColumnPosition: this.state.initialColumnPosition,
+                finalLinePosition: line,
+                finalColumnPosition: column
+            }
+
+            apiService.post('/movement', body)
+                //.then(res => console.log(res.data))
+                .then((res) => {
+                    if(res.data != 'OK'){
+                        this.setState({initialLinePosition : null})
+                        this.setState({initialColumnPosition : null})
+                        this.setState({verified: false})
+                        return false
+                }
+                })
+                .catch((err) => {
+                    console.error("ops! ocorreu um erro" + err);
+                });           
+        }
+    }
 
     realizeMovement(i, j){
+
         if(!this.props.isBoardInLastPosition){
+            return
+        }
+
+        this.verifyIfMoveWillBeRealized(i, j)
+        
+        console.log(this.state.verified)
+        //console.log(this.verifyIfMoveWillBeRealized(i, j))
+        if(this.state.verified == false){
+            this.setState({verified: true})
             return
         }
         

@@ -1,6 +1,12 @@
+/*
+
+    vai ser removido do codigo
+
+*/
+
+
 const Board = require('../models/board')
-const {check,
-    checkMate} = require('../service/check')
+const {checkMate} = require('../service/check')
 
 function realizeMove(board, initialLinePosition, initialColumnPosition, finalLinePosition, finalColumnPosition,turn){
 

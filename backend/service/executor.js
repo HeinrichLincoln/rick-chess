@@ -1,3 +1,9 @@
+/*
+
+    executar açoes relacionadas ao jogo de xadrez
+
+*/
+
 const executorService = {
     makeMove : function(board, move){
 
@@ -5,10 +11,9 @@ const executorService = {
             
             var keepPiece = board.getSquareByPosition(move.getInitialPosition())
             board.removePieceFromBoardByPosition(move.getInitialPosition())
-            board.putPieceOnBoardByPosition(move.getFinalPosition(), keepPiece)
+            board.putPieceOnBoardByPosition(keepPiece, move.getFinalPosition())
 
         }
-
     }
 }
 

@@ -1,7 +1,5 @@
 import React from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChess, faChessBishop, faChessKnight, faChessPawn, faChessRook, faChessQueen, faChessKing } from "@fortawesome/free-solid-svg-icons"
-
 
 class Square extends React.Component{
     

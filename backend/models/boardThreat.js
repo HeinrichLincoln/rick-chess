@@ -14,6 +14,10 @@ class ThreatBoard {
         this.board[i][j] = value
     }
 
+    putValueOnBoardByPosition(position, value){
+        this.board[position.getLine()][position.getColumn()] = value
+    }
+
     removeValueFromBoard(i, j) {
         this.board[i][j] = null
     }
@@ -24,6 +28,10 @@ class ThreatBoard {
 
     getSquare(i, j){
         return this.board[i][j]
+    }
+
+    getSquareByPosition(position){
+        return this.board[position.getLine()][position.getColumn()]
     }
 
     setBoard(newBoard){

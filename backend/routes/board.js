@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const router = express.Router() 
 const { realizeMovement,
         reset,
@@ -8,6 +9,9 @@ const { realizeMovement,
 
 
 router.get('/board', returnBoard)
+
+//esta permitindo o CORS apenas para esta rota
+//router.get('/result', cors(), returnResult)
 
 router.get('/result', returnResult)
 

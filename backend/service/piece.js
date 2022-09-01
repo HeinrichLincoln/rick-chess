@@ -85,7 +85,7 @@ const PieceService = {
             }
             if(board.getSquare(finalLinePosition, finalColumnPosition) != null){
                 if(board.getSquare(finalLinePosition, finalColumnPosition).getColor() != board.getSquare(initialLinePosition, initialColumnPosition).getColor()){
-                    if(initialLinePosition + 1 == finalLinePosition  && finalColumnPosition == (initialColumnPosition + 1 || initialColumnPosition - 1)){
+                    if(initialLinePosition + 1 == finalLinePosition  && finalColumnPosition == (initialColumnPosition + 1) || (initialColumnPosition - 1)){
                         verified = true
                     }
                 }
@@ -109,14 +109,15 @@ const PieceService = {
                 }
                 
                 if(initialLinePosition == 6 && board.getSquare(initialLinePosition - 1, initialColumnPosition) == null){
-                    if((initialLinePosition == finalLinePosition + 2) && (initialColumnPosition == finalColumnPosition)){
+                    if((finalLinePosition == 4) && (initialColumnPosition == finalColumnPosition)){
                         verified = true
                     }
                 }
             }
+            
             if(board.getSquare(finalLinePosition, finalColumnPosition) != null){
                 if(board.getSquare(finalLinePosition, finalColumnPosition).getColor() != board.getSquare(initialLinePosition, initialColumnPosition).getColor()){
-                    if(initialLinePosition - 1 == finalLinePosition && finalColumnPosition == (initialColumnPosition + 1 || initialColumnPosition - 1)){
+                    if(initialLinePosition - 1 == finalLinePosition && finalColumnPosition == (initialColumnPosition + 1) || (initialColumnPosition - 1)){
                         verified = true
                     }
                 }
