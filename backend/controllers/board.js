@@ -20,6 +20,9 @@ const realizeMovement = (req, res) => {
     2) faz o movimento 
     3) Se for Mate acaba o jogo, senão faz a jogada
     */
+   
+    res.send('OK')
+    return
 
     var move = new MoveDto(req.body)
 
@@ -55,6 +58,18 @@ const draw = (req, res) => {
 
 const returnResult = (req, res) => {
     res.send(result)
+}
+
+function test1(){
+
+    res.send('OK')
+
+}
+
+function test2(){
+
+    res.send('Invalid Move')
+
 }
 
 module.exports = {

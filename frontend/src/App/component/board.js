@@ -11,14 +11,14 @@ class Board extends React.Component{
             keepPiece: null,
             initialLinePosition: null,
             initialColumnPosition: null,
-            verified: true
+            verified: false
         }            
     }
     renderSquare(i, j) {
         return <Square
                        value = {this.getPiecesSymbolsFromBoard(i, j)}
                        className = {this.squareColor(i, j)}
-                       realizeMovement = {() =>this.realizeMovement(i, j)}
+                       realizeMovement = {() => this.realizeMovement(i, j)}
                        icon = {this.renderIcon(i, j)}
                        ></Square>
     }
@@ -114,11 +114,11 @@ class Board extends React.Component{
     verifyIfMoveWillBeRealized(line, column){
 
         if(this.state.keepPiece == null){
-            
             if(this.props.board.getSquare(line, column) != null){
 
                 this.setState({initialLinePosition : line})
                 this.setState({initialColumnPosition : column})
+                this.setState({verified: true})
 
             }
         }else{
@@ -134,15 +134,18 @@ class Board extends React.Component{
                 //.then(res => console.log(res.data))
                 .then((res) => {
                     if(res.data != 'OK'){
+                        this.props.board.putPieceOnBoard(this.state.initialLinePosition, this.state.initialColumnPosition, this.state.keepPiece)
+                        this.setState({keepPiece: null})
                         this.setState({initialLinePosition : null})
                         this.setState({initialColumnPosition : null})
                         this.setState({verified: false})
-                        return false
-                }
+                    }else{
+                        this.setState({verified: true}) 
+                    }
                 })
                 .catch((err) => {
                     console.error("ops! ocorreu um erro" + err);
-                });           
+                });          
         }
     }
 
@@ -153,11 +156,8 @@ class Board extends React.Component{
         }
 
         this.verifyIfMoveWillBeRealized(i, j)
-        
-        console.log(this.state.verified)
-        //console.log(this.verifyIfMoveWillBeRealized(i, j))
+
         if(this.state.verified == false){
-            this.setState({verified: true})
             return
         }
         
@@ -165,6 +165,7 @@ class Board extends React.Component{
             if(this.props.board.getSquare(i, j) != null){
                 this.setState({keepPiece : this.props.board.getSquare(i, j)})
                 this.props.board.removePieceFromBoard(i, j)
+                this.setState({verified: false})
             }
         }else{
             this.props.board.putPieceOnBoard(i, j, this.state.keepPiece)
