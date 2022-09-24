@@ -16,11 +16,11 @@ class Board extends React.Component{
     }
     renderSquare(i, j) {
         return <Square
-                       value = {this.getPiecesSymbolsFromBoard(i, j)}
-                       className = {this.squareColor(i, j)}
-                       realizeMovement = {() => this.realizeMovement(i, j)}
-                       icon = {this.renderIcon(i, j)}
-                       ></Square>
+                    value = {this.getPiecesSymbolsFromBoard(i, j)}
+                    className = {this.squareColor(i, j)}
+                    realizeMovement = {() => this.realizeMovement(i, j)}
+                    icon = {this.renderIcon(i, j)}
+                ></Square>
     }
 
     squareColor(i, j) {
@@ -111,68 +111,70 @@ class Board extends React.Component{
         return value
     }
 
-    verifyIfMoveWillBeRealized(line, column){
-
+    isSelectingPiece(line, column) {
         if(this.state.keepPiece == null){
-            if(this.props.board.getSquare(line, column) != null){
-
+            if(this.props.board.getSquare(line, column) != null) {
                 this.setState({initialLinePosition : line})
                 this.setState({initialColumnPosition : column})
-                this.setState({verified: true})
-
+                return true
             }
-        }else{
-
-            var body = {
-                initialLinePosition: this.state.initialLinePosition,
-                initialColumnPosition: this.state.initialColumnPosition,
-                finalLinePosition: line,
-                finalColumnPosition: column
-            }
-
-            apiService.post('/movement', body)
-                //.then(res => console.log(res.data))
-                .then((res) => {
-                    if(res.data != 'OK'){
-                        this.props.board.putPieceOnBoard(this.state.initialLinePosition, this.state.initialColumnPosition, this.state.keepPiece)
-                        this.setState({keepPiece: null})
-                        this.setState({initialLinePosition : null})
-                        this.setState({initialColumnPosition : null})
-                        this.setState({verified: false})
-                    }else{
-                        this.setState({verified: true}) 
-                    }
-                })
-                .catch((err) => {
-                    console.error("ops! ocorreu um erro" + err);
-                });          
         }
+
+        return false
     }
 
-    realizeMovement(i, j){
+    async realizeMovement(i, j){
 
         if(!this.props.isBoardInLastPosition){
             return
         }
 
-        this.verifyIfMoveWillBeRealized(i, j)
-
-        if(this.state.verified == false){
+        // verifica se o usuário está no primeiro click (apenas selecionando a peça)
+        if(this.isSelectingPiece(i, j)) {
+            this.saveSelectedPieceAndRemoveItFromBoard(i, j);
             return
         }
-        
-        if(this.state.keepPiece == null){
-            if(this.props.board.getSquare(i, j) != null){
-                this.setState({keepPiece : this.props.board.getSquare(i, j)})
-                this.props.board.removePieceFromBoard(i, j)
-                this.setState({verified: false})
-            }
-        }else{
-            this.props.board.putPieceOnBoard(i, j, this.state.keepPiece)
-            this.setState({keepPiece : null})
+
+        // usuário está no segundo passo - já escolheu a casa destino
+        if(await this.isValidMove(i, j)) { // se for válido faz o movimento
+            this.putSelectedPieceOnNewPosition(i, j);
             this.props.implementingHistory() 
+        } else { // senão for válido, colocar a peça de volta onde estava
+            // colocar a peça de volta onde ela estava
+        }
+
+    }
+
+    async isValidMove(i, j) {
+        var body = {
+            initialLinePosition: this.state.initialLinePosition,
+            initialColumnPosition: this.state.initialColumnPosition,
+            finalLinePosition: i,
+            finalColumnPosition: j
+        }
+
+        const movementResponse = await apiService.post('/movement', body)
+
+        if(movementResponse.data === 'OK') {
+            return true
+        }
+
+        return false 
+    }
+
+    saveSelectedPieceAndRemoveItFromBoard(i, j) {
+        if(this.props.board.getSquare(i, j) != null){
+            this.setState({keepPiece : this.props.board.getSquare(i, j)})
+            this.props.board.removePieceFromBoard(i, j)
         }
     }
+
+    putSelectedPieceOnNewPosition(i, j) {
+        this.props.board.putPieceOnBoard(i, j, this.state.keepPiece)
+        this.setState({keepPiece : null})
+    }
+
+
 
     render(){
         return (
