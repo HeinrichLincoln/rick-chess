@@ -137,10 +137,15 @@ class Board extends React.Component{
 
         // usuário está no segundo passo - já escolheu a casa destino
         if(await this.isValidMove(i, j)) { // se for válido faz o movimento
-            this.putSelectedPieceOnNewPosition(i, j);
+            this.putSelectedPieceOnNewPosition(i, j)
             this.props.implementingHistory() 
-        } else { // senão for válido, colocar a peça de volta onde estava
-            // colocar a peça de volta onde ela estava
+        } else { 
+            this.putSelectedPieceOnNewPosition(this.state.initialLinePosition, this.state.initialColumnPosition)
+            this.setState({keepPiece: null})
+            this.setState({initialLinePosition: null})
+            this.setState({initialColumnPosition: null})
+        // senão for válido, colocar a peça de volta onde estava
+        // colocar a peça de volta onde ela estava
         }
 
     }

@@ -1,9 +1,3 @@
-/*
-
-    executar açoes relacionadas ao jogo de xadrez
-
-*/
-
 const executorService = {
     makeMove : function(board, move){
 

@@ -16,8 +16,12 @@ const moveService = {
         initialPosition = move.getInitialPosition()
         finalPosition = move.getFinalPosition()
 
-        if (verifyPieceTurn(board.getSquareByPosition(initialPosition), turn) && verifyPieceMove(board, move) && !checkService.verifyIfMovePutsInCheck(board, move)) {
-            return true
+        if (verifyPieceTurn(board.getSquareByPosition(initialPosition), turn)) {
+            if(verifyPieceMove(board, move)){
+                if(!checkService.verifyIfMovePutsInCheck(board, move)){
+                    return true
+                }
+            }
         }
 
         return false
