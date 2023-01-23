@@ -4,8 +4,6 @@
 
 */
 
-
-const Board = require('../models/board')
 const PieceService = require('../service/piece')
 const checkService = require('../service/checkService')
 

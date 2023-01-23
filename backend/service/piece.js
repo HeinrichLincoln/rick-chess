@@ -9,7 +9,7 @@ const PieceService = {
         var finalColumnPosition = move.getFinalPosition().getColumn()
 
         if(initialLinePosition == finalLinePosition){
-            if(finalLinePosition == finalColumnPosition){
+            if(initialColumnPosition == finalColumnPosition){
                 return verified
             }
         }
@@ -22,6 +22,13 @@ const PieceService = {
                         if(board.getSquare(i, j) == null){
                             verified = true
                         }
+
+                        if(finalLinePosition === i){
+                            if(board.getSquare(i, j).getColor() != board.getSquare(initialLinePosition, initialColumnPosition).getColor()){
+                                verified = true
+                            }
+                        }
+
                         j++
                         if(j == finalColumnPosition){
                             break
@@ -34,6 +41,13 @@ const PieceService = {
                         if(board.getSquare(i, j) == null){
                             verified = true
                         }
+
+                        if(finalLinePosition === i){
+                            if(board.getSquare(i, j).getColor() != board.getSquare(initialLinePosition, initialColumnPosition).getColor()){
+                                verified = true
+                            }
+                        }
+
                         j--
                         if(j == finalColumnPosition){
                             break
@@ -46,6 +60,13 @@ const PieceService = {
                         if(board.getSquare(i, j) == null){
                             verified = true
                         }
+
+                        if(finalLinePosition === i){
+                            if(board.getSquare(i, j).getColor() != board.getSquare(initialLinePosition, initialColumnPosition).getColor()){
+                                verified = true
+                            }
+                        }
+
                         j--
                         if(j == finalColumnPosition){
                             break
@@ -58,6 +79,13 @@ const PieceService = {
                         if(board.getSquare(i, j) == null){
                             verified = true
                         }
+
+                        if(finalLinePosition === i){
+                            if(board.getSquare(i, j).getColor() != board.getSquare(initialLinePosition, initialColumnPosition).getColor()){
+                                verified = true
+                            }
+                        }
+
                         j++
                         if(j == finalColumnPosition){
                             break
@@ -78,7 +106,7 @@ const PieceService = {
         var finalColumnPosition = move.getFinalPosition().getColumn()
 
         if(initialLinePosition == finalLinePosition){
-            if(finalLinePosition == finalColumnPosition){
+            if(initialColumnPosition == finalColumnPosition){
                 return verified
             }
         }
@@ -115,7 +143,7 @@ const PieceService = {
         var finalColumnPosition = move.getFinalPosition().getColumn()
 
         if(initialLinePosition == finalLinePosition){
-            if(finalLinePosition == finalColumnPosition){
+            if(initialColumnPosition == finalColumnPosition){
                 return verified
             }
         }
@@ -156,7 +184,7 @@ const PieceService = {
         var finalColumnPosition = move.getFinalPosition().getColumn()
 
         if(initialLinePosition == finalLinePosition){
-            if(finalLinePosition == finalColumnPosition){
+            if(initialColumnPosition == finalColumnPosition){
                 return verified
             }
         }
@@ -208,7 +236,7 @@ const PieceService = {
         var finalColumnPosition = move.getFinalPosition().getColumn()
 
         if(initialLinePosition == finalLinePosition){
-            if(finalLinePosition == finalColumnPosition){
+            if(initialColumnPosition == finalColumnPosition){
                 return verified
             }
         }
@@ -289,7 +317,7 @@ const PieceService = {
         var finalColumnPosition = move.getFinalPosition().getColumn()
 
         if(initialLinePosition == finalLinePosition){
-            if(finalLinePosition == finalColumnPosition){
+            if(initialColumnPosition == finalColumnPosition){
                 return verified
             }
         }
